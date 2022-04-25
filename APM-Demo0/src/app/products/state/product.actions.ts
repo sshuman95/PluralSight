@@ -1,4 +1,5 @@
 import { createAction, props } from '@ngrx/store';
+import { create } from 'domain';
 import { Product } from '../product';
 
 const toggleProductCode = createAction('[Product] Toggle Product Code');
@@ -29,11 +30,45 @@ const updateProduct = createAction(
   props<{ product: Product }>()
 );
 
+const updateProductSuccess = createAction(
+  '[Product] Product Updated Success',
+  props<{ product: Product }>()
+);
+
+const updateProductError = createAction(
+  '[Product] Product Updated Error',
+  props<{ error: string }>()
+);
+
 const saveProduct = createAction(
   '[Product] Product Saved',
   props<{ product: Product }>()
 );
 
+const saveProductSuccess = createAction(
+  '[Product] Product Saved Success',
+  props<{ product: Product }>()
+);
+
+const saveProductError = createAction(
+  '[Product] Product Saved Errror',
+  props<{ error: string }>()
+);
+
+const deleteProduct = createAction(
+  '[Product] Product Deleted',
+  props<{ product: Product }>()
+);
+
+const deleteProductSuccess = createAction(
+  '[Product] Product Deleted Success',
+  props<{ product: Product }>()
+);
+
+const deleteProductError = createAction(
+  '[Product] Product Deleted Errror',
+  props<{ error: string }>()
+);
 export const ProductActions = {
   toggleProductCode: toggleProductCode,
   setCurrentProduct: setCurrentProduct,
@@ -42,6 +77,13 @@ export const ProductActions = {
   loadProducts: loadProducts,
   loadProductsError: loadProductsError,
   loadProductsSuccess: loadProductsSuccess,
-  updateProduct: updateProduct,
   saveProduct: saveProduct,
+  saveProductSuccess: saveProductSuccess,
+  saveProductError: saveProductError,
+  updateProduct: updateProduct,
+  updateProductSuccess: updateProductSuccess,
+  updateProductError: updateProductError,
+  deleteProduct: deleteProduct,
+  deleteProductSuccess: deleteProductSuccess,
+  deleteProductError: deleteProductError,
 };

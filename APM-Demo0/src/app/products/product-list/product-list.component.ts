@@ -1,17 +1,13 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-
-import { Observable, Subscription } from 'rxjs';
-
+import { Observable } from 'rxjs';
 import { Product } from '../product';
-import { ProductService } from '../product.service';
 import { ProductActions } from '../state/product.actions';
 import {
   getCurrentProduct,
   getError,
   getProducts,
   getShowProductCode,
-  ProductState,
   State,
 } from '../state/product.reducer';
 
