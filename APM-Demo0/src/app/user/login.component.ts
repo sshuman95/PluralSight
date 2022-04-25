@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { State } from '../state/app.state';
 
 import { AuthService } from './auth.service';
@@ -16,8 +16,7 @@ import { getShowMask } from './state/user.reducer';
 export class LoginComponent implements OnInit {
   pageTitle = 'Log In';
 
-  maskUserName: boolean;
-  sub: Subscription;
+  showMask$: Observable<boolean>;
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -25,9 +24,7 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.sub = this.store
-      .select(getShowMask)
-      .subscribe((d) => (this.maskUserName = d));
+    this.showMask$ = this.store.select(getShowMask);
   }
 
   cancel(): void {

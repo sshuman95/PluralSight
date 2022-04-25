@@ -1,4 +1,4 @@
-<div class="card" *ngIf="selectedProduct | async">
+<div class="card" *ngIf="selectedProduct$ | async as product">
   <div class="card-header">
     {{ pageTitle }}
   </div>

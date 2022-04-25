@@ -13,6 +13,7 @@ export interface ProductState {
   showProductCode: boolean;
   products: Product[];
   currentProduct: Product;
+  status: string;
 }
 
 export interface State extends AppState.State {
@@ -23,6 +24,7 @@ const initialState: ProductState = {
   showProductCode: false,
   products: [],
   currentProduct: null,
+  status: '',
 };
 
 export const productReducer = createReducer<ProductState>(
@@ -56,6 +58,20 @@ export const productReducer = createReducer<ProductState>(
       ...state,
       currentProduct: null,
     };
+  }),
+  on(ProductActions.loadProductsSuccess, (state, action) => {
+    return {
+      ...state,
+      products: action.products,
+      status: '',
+    };
+  }),
+  on(ProductActions.loadProductsError, (state, action) => {
+    return {
+      ...state,
+      products: [],
+      status: action.error,
+    };
   })
 );
 
@@ -76,14 +92,7 @@ export const getCurrentProduct = createSelector(
   (state) => state.currentProduct
 );
 
-// export const getCurrentProductById = createSelector(
-//   getProductFeatureState,
-//   (state) => state.currentProductId
-// );
-
-// export const getCurrentProduct = createSelector(
-//   getProductFeatureState,
-//   getCurrentProductById,
-//   (state, currentProductId) =>
-//     state.products.find((p) => p.id === currentProductId)
-// );
+export const getError = createSelector(
+  getProductFeatureState,
+  (state) => state.status
+);

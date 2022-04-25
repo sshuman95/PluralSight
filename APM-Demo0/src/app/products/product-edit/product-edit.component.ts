@@ -23,7 +23,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
 
   product: Product | null;
   sub: Subscription;
-  selectedProduct: Observable<Product>;
+  selectedProduct$: Observable<Product>;
   // Use with the generic validation message class
   displayMessage: { [key: string]: string } = {};
   private validationMessages: { [key: string]: { [key: string]: string } };
@@ -76,7 +76,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
     //   currentProduct => this.displayProduct(currentProduct)
     // );
 
-    this.selectedProduct = this.store.select(getCurrentProduct).pipe(
+    this.selectedProduct$ = this.store.select(getCurrentProduct).pipe(
       tap((data) => {
         this.displayProduct(data);
       })

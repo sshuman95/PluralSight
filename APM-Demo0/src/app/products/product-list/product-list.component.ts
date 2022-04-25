@@ -8,6 +8,8 @@ import { ProductService } from '../product.service';
 import { ProductActions } from '../state/product.actions';
 import {
   getCurrentProduct,
+  getError,
+  getProducts,
   getShowProductCode,
   ProductState,
   State,
@@ -18,38 +20,22 @@ import {
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css'],
 })
-export class ProductListComponent implements OnInit, OnDestroy {
+export class ProductListComponent implements OnInit {
   pageTitle = 'Products';
   errorMessage: string;
+  displayCode$: Observable<boolean>;
+  products$: Observable<Product[]>;
+  error$: Observable<string>;
+  currentProduct$: Observable<Product>;
 
-  displayCode$: Subscription;
-  displayCode: boolean = false;
-  products: Product[];
-
-  // Used to highlight the selected product in the list
-  selectedProduct: Product | null;
-  sub: Subscription;
-  currentProduct: Observable<Product>;
-  constructor(
-    private productService: ProductService,
-    private store: Store<State>
-  ) {}
+  constructor(private store: Store<State>) {}
 
   ngOnInit(): void {
-    this.currentProduct = this.store.select(getCurrentProduct);
-
-    this.productService.getProducts().subscribe({
-      next: (products: Product[]) => (this.products = products),
-      error: (err) => (this.errorMessage = err),
-    });
-
-    this.displayCode$ = this.store
-      .select(getShowProductCode)
-      .subscribe((res) => (this.displayCode = res));
-  }
-
-  ngOnDestroy(): void {
-    this.displayCode$.unsubscribe();
+    this.products$ = this.store.select(getProducts);
+    this.store.dispatch(ProductActions.loadProducts());
+    this.currentProduct$ = this.store.select(getCurrentProduct);
+    this.displayCode$ = this.store.select(getShowProductCode);
+    this.error$ = this.store.select(getError);
   }
 
   checkChanged(): void {
