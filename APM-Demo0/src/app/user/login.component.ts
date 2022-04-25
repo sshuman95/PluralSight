@@ -1,22 +1,33 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
+import { State } from '../state/app.state';
 
 import { AuthService } from './auth.service';
+import { UserActions } from './state/user.actions';
+import { getShowMask } from './state/user.reducer';
 
 @Component({
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
   pageTitle = 'Log In';
 
   maskUserName: boolean;
-
-  constructor(private authService: AuthService, private router: Router) { }
+  sub: Subscription;
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private store: Store<State>
+  ) {}
 
   ngOnInit(): void {
-
+    this.sub = this.store
+      .select(getShowMask)
+      .subscribe((d) => (this.maskUserName = d));
   }
 
   cancel(): void {
@@ -24,7 +35,7 @@ export class LoginComponent implements OnInit {
   }
 
   checkChanged(): void {
-    this.maskUserName = !this.maskUserName;
+    this.store.dispatch(UserActions.toggleUserMask());
   }
 
   login(loginForm: NgForm): void {
